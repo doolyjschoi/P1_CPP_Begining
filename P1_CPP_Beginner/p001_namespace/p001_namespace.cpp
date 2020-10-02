@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <iostream>
+#include <fstream>
 
 namespace AnotherVector
 {
@@ -42,6 +43,17 @@ void main(void) {
 
 	std::cout << "Hello, World!" << std::endl;
 
-	std::cout << my_vector.x << " " << my_vector.y 
-		      << " " << my_vector.z << std::endl;
+	//std::cout << my_vector.x << " " << my_vector.y  
+	//	      << " " << my_vector.z << std::endl;
+
+	std::cout << my_vector << std::endl;
+
+	// c-style file output
+	//FILE *outputfile = fopen("cstyle.txt", "w");
+	//fprintf(outputfile, "%d %d %d \n", my_vector.x, my_vector.y, my_vector.z);
+	//fclose(outputfile);
+
+	// c++-style file output
+	std::ofstream outputfile("cppstyle.txt");
+	outputfile << my_vector;
 }
