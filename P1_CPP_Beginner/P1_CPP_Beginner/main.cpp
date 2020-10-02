@@ -3,7 +3,7 @@
 #include <iostream>
 #include <fstream>
 
-struct Vector2D{
+struct Vector2D {
 	int x;
 	int y;
 
@@ -12,7 +12,7 @@ struct Vector2D{
 	}
 };
 
-std::ostream &operator << (std::ostream &stream, Vector2D obj)
+std::ostream& operator << (std::ostream& stream, Vector2D obj)
 {
 	stream << obj.x << " " << obj.y << std::endl;
 
@@ -30,7 +30,7 @@ int main(void) {
 	//fclose(of);
 
 	//my_vector.print();
-	
+
 	//printf("This is c style!\n");
 	/*using namespace std;*/
 	//std::cout << "This is c++ style!" << std::endl;
@@ -40,6 +40,6 @@ int main(void) {
 
 	std::ofstream ofile("cppstyle.txt");
 	ofile << my_vector << std::endl;
-	
+
 	return 0;
 }
