@@ -19,7 +19,7 @@ std::ostream &operator << (std::ostream &stream, Vector2D obj)
 	return stream;
 }
 
-void main() {
+int main(void) {
 
 	Vector2D my_vector;
 	my_vector.x = 1;
@@ -41,4 +41,5 @@ void main() {
 	std::ofstream ofile("cppstyle.txt");
 	ofile << my_vector << std::endl;
 	
+	return 0;
 }
