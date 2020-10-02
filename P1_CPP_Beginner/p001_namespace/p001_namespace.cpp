@@ -53,7 +53,7 @@ void main(void) {
 	//fprintf(outputfile, "%d %d %d \n", my_vector.x, my_vector.y, my_vector.z);
 	//fclose(outputfile);
 
-	// c++-style file output
+	// c++-style file output (textfile output)
 	std::ofstream outputfile("cppstyle.txt");
 	outputfile << my_vector;
 }
