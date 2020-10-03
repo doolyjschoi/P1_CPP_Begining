@@ -72,7 +72,7 @@ void main(void) {
 
 	std::getline(std::cin, typed_string);
 
-	// end time check method3
+	// end time check method4
 	auto end = std::chrono::high_resolution_clock::now();
 
 	std::cout << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() / 1000.0 << "s" << std::endl;
