@@ -67,12 +67,12 @@ void main(void) {
 
 	string typed_string;
 
-	// start time check
+	// start time check method
 	auto begin = std::chrono::high_resolution_clock::now();
 
 	std::getline(std::cin, typed_string);
 
-	// end time check
+	// end time check method
 	auto end = std::chrono::high_resolution_clock::now();
 
 	std::cout << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() / 1000.0 << "s" << std::endl;
