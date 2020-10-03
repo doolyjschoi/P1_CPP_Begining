@@ -1,13 +1,8 @@
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
-
-namespace AnotherVector
-{
-	int x;
-	int y;
-	int z;
-}
+#include <sstream>
+#include <chrono>
 
 struct Vector3D
 {
@@ -35,7 +30,7 @@ std::ostream& operator << (std::ostream &stream, Vector3D obj)
 }
 
 void main(void) {
-	AnotherVector::x = 1;
+	//AnotherVector::x = 1;
 
 
 	Vector3D my_vector(4, 5, 6);
@@ -54,6 +49,33 @@ void main(void) {
 	//fclose(outputfile);
 
 	// c++-style file output (textfile output)
-	std::ofstream outputfile("cppstyle.txt");
-	outputfile << my_vector;
+	//std::ofstream outputfile("cppstyle.txt");
+	//outputfile << my_vector;
+	
+	using namespace std;
+	
+	ifstream inpuntfile("paragraph.txt");
+
+	// char string[255];
+	string input_string;
+
+	stringstream string_stream;
+	string_stream << inpuntfile.rdbuf(); // read the file
+	input_string = string_stream.str(); //str holds the contents of the file
+
+	cout << input_string << endl; // you can do anyting with the string!!!
+
+	string typed_string;
+
+	// start time check
+	auto begin = std::chrono::high_resolution_clock::now();
+
+	std::getline(std::cin, typed_string);
+
+	// end time check
+	auto end = std::chrono::high_resolution_clock::now();
+
+	std::cout << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() / 1000.0 << "s" << std::endl;
+
+	std::cout << "Comparison " << typed_string.compare(input_string) << std::endl;
 }
