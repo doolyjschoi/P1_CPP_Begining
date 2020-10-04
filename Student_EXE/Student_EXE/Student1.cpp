@@ -110,6 +110,6 @@ void main()
 	std::cout << b << std::endl;
 	std::cout << c << std::endl;
 	std::cout << b << std::endl << std::endl;
-	std::cout << "내적을 구하면" << std::endl;
+	std::cout << "inner product is" << std::endl;
 	std::cout << f << std::endl << std::endl;
 }
