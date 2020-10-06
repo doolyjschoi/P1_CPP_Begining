@@ -35,16 +35,78 @@ void drawLine(const int& x_s, const int& y_s, const int& x_e, const int& y_e, co
 
 class Line
 {
-public: // access modifier (3 types: public, private, protected)
+private: // access modifier (3 types: public, private, protected)
 	int start_x, start_y; // member variables
 	int end_x, end_y;
 	//int red, green, blue;
 
+public:
+	void initialize(const int& _start_x, const int& _start_y, const int& _end_x, const int& _end_y)
+	{
+		start_x = _start_x;
+		start_y = _start_y;
+		end_x = _end_x;
+		end_y = _end_y;
+	}
 	void draw() // member function
 	{
 		// draw lines
 		drawLine(start_x, start_y, end_x, end_y, 0.0f, 0.0f, 1.0f);
 	}
+};
+
+class Square
+{
+public:
+	int start_x, start_y;
+	int end_x, end_y;
+
+	void initialize(const int& _start_x, const int& _start_y, const int& _end_x, const int& _end_y)
+	{
+		start_x = _start_x;
+		start_y = _start_y;
+		end_x = _end_x;
+		end_y = _end_y;
+	}
+
+	void draw()
+	{
+		// draw square
+		drawLine(start_x, start_y, start_x, end_y, 0.0f, 0.0f, 1.0f);
+		drawLine(start_x, end_y, end_x, end_y, 0.0f, 0.0f, 1.0f);
+		drawLine(start_x, start_y, end_x, start_y, 0.0f, 0.0f, 1.0f);
+		drawLine(end_x, start_y, end_x, end_y, 0.0f, 0.0f, 1.0f);
+	}
+
+	void drawFill()
+	{
+		for (int j = start_y; j < end_y; j++)
+		{
+			for (int i = start_x; i < end_x; i++)
+				drawOnePixel(i, j, 0.0f, 0.0f, 1.0f);
+		}
+	}
+};
+
+class Circle
+{
+public:
+	int center_x, center_y;
+	int radius;
+
+	void initialize(const int& _center_x, const int& _center_y, const int& _radius)
+	{
+		center_x = _center_x;
+		center_y = _center_y;
+		radius = _radius;
+	}
+
+	void draw()
+	{
+		// draw circle
+		
+	}
+
 };
 
 void drawEmptySquare()
@@ -64,39 +126,70 @@ void clearBackground()
 	}
 }
 
-void draw()
+void drawLines()
 {
-	/* background clearing */
-	clearBackground();
-
-	// drawing multiple lines
-	//drawLine(100, 400, 250, 420, 0.0f, 0.0f, 1.0f);
-	//drawLine(110, 410, 260, 450, 0.0f, 0.0f, 1.0f);
-	//drawLine(130, 430, 280, 480, 0.0f, 0.0f, 1.0f);
-	
-	//Line first_line;
-	//Line second_line;
-	//Line third_line;
-
 	const int num_lines = 10;
 	Line* my_lines = new Line[num_lines];
 
 	// initialize lines
 	for (int i = 0; i < num_lines; i++)
 	{
-		my_lines[i].start_x = 10 * i;
-		my_lines[i].start_x = 100;
-		my_lines[i].start_x = 10 * i;
-		my_lines[i].start_x = 200;
+		my_lines[i].initialize(30 * i + 10, 10, 30 * i + 50, 50);
 	}
 
 	// draw lines
 	for (int i = 0; i < num_lines; i++)
 		my_lines[i].draw();
+}
+
+void drawEmptySquare()
+{
+	const int num_squares = 10;
+	Square* my_squares = new Square[num_squares];
+
+	// initialize squares
+	for (int i = 0; i < num_squares; i++)
+	{
+		my_squares[i].initialize(50 * i + 10, 150, 50 * i + 30, 200);
+	}
+
+	// draw emptysquares
+	for (int i = 0; i < num_squares; i++)
+		my_squares[i].draw();
+}
+
+void drawfilledSquare()
+{
+	const int num_squares = 10;
+	Square* my_squares = new Square[num_squares];
+
+	for (int i = 0; i < num_squares; i++)
+	{
+		my_squares[i].initialize(50 * i + 30, 250, 50 * i + 50, 300);
+	}
+
+	// draw filledsquares
+	for (int i = 0; i < num_squares; i++)
+		my_squares[i].drawFill();
+}
+
+void draw()
+{
+	/* background clearing */
+	clearBackground();
+
+	/* lines */
+	drawLines();
+
+	/* emptySquare */
+	drawEmptySquare();
+
+	/* filledSquare */
+	drawfilledSquare();
 
 	// don't forget deleting memory when it's not necessary any more.
-	//delete[] my_lines;
-
+	// delete[] my_lines;
+	
 	/*사선*/
 	//for (int i = 50; i >= 46; i--)
 	//{
@@ -111,19 +204,6 @@ void draw()
 	//	if (y >= 360)
 	//		y = 350;
 	//}
-
-
-	/* empty square */
-	drawEmptySquare();
-
-
-	/*채운사각형*/
-	//for (int j = 350; j < 400; j++)
-	//{
-	//	for (int i = 300; i < 350; i++)
-	//		drawOnePixel(i, j, 0.0f, 0.0f, 1.0f);
-	//}
-
 
 	/*삼각형*/
 	//drawLine(50, 50, 100, 100, 0.0f, 0.0f, 1.0f);
