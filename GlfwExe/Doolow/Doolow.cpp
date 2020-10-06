@@ -51,10 +51,10 @@ public:
 
     void drawEmptySquare()
     {
-        drawLine(start_x, start_y, start_x, end_y, 1.0f, 0.0f, 0.0f);
-        drawLine(start_x, end_y, end_x, end_y, 1.0f, 0.0f, 0.0f);
-        drawLine(start_x, start_y, end_x, start_y, 1.0f, 0.0f, 0.0f);
-        drawLine(end_x, start_y, end_x, end_y, 1.0f, 0.0f, 0.0f);
+        drawLine(start_x, start_y, start_x, end_y, 0.0f, 0.0f, 1.0f);
+        drawLine(start_x, end_y, end_x, end_y, 0.0f, 0.0f, 1.0f);
+        drawLine(start_x, start_y, end_x, start_y, 0.0f, 0.0f, 1.0f);
+        drawLine(end_x, start_y, end_x, end_y, 0.0f, 0.0f, 1.0f);
     }
 
     void drawFilledSquare()
@@ -62,7 +62,7 @@ public:
         for (int j = start_y; j < end_y; j++)
         {
             for (int i = start_x; i < end_x; i++)
-                drawPixel(i, j, 0.0f, 0.0f, 1.0f);
+                drawPixel(i, j, 0.0f, 1.0f, 0.0f);
         }
     }
 };
@@ -78,16 +78,44 @@ void clearBackground()
 
 void drawLines()
 {
-    const int num_lines = 15;
+    const int num_lines = 10;
     Line* my_lines = new Line[num_lines];
 
     for (int i = 0; i < num_lines; i++)
     {
-        my_lines[i].initialize(50 * i + 10, 10, 50 * i + 10, 60);
+        my_lines[i].initialize(50 * i + 10, 0, 50 * i + 50, 50);
     }
 
     for (int i = 0; i < num_lines; i++)
         my_lines[i].draw();
+}
+
+void drawEmptysquare()
+{
+    const int num_esquares = 8;
+    Square* my_esquares = new Square[num_esquares];
+
+    for (int i = 0; i < num_esquares; i++)
+    {
+        my_esquares[i].initialize(50 * i + 10, 150, 50 * i + 50, 200);
+    }
+
+    for (int i = 0; i < num_esquares; i++)
+        my_esquares[i].drawEmptySquare();
+}
+
+void drawFilledSquare()
+{
+    const int num_fsquares = 5;
+    Square* my_fsquares = new Square[num_fsquares];
+
+    for (int i = 0; i < num_fsquares; i++)
+    {
+        my_fsquares[i].initialize(50 * i + 30, 250, 50 * i + 70, 300);
+    }
+
+    for (int i = 0; i < num_fsquares; i++)
+        my_fsquares[i].drawFilledSquare();
 }
 
 int main(void)
@@ -115,21 +143,38 @@ int main(void)
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
         
+        // background clearing
         clearBackground();
-        drawLines;
 
-        const int i = rand() % width, j = rand() % height;
-        drawPixel(i, j, 1.0f, 1.0f, 1.0f);
+        // draw lines
+        drawLines();
+
+        // draw Empty Squares
+        drawEmptysquare();
+
+        // draw Filled Squares
+        drawFilledSquare();
+
+        /*const int i = rand() % width, j = rand() % height;
+        drawPixel(i, j, 1.0f, 1.0f, 1.0f);*/
+
+
+
+
+        glDrawPixels(width, height, GL_RGB, GL_FLOAT, pixels);
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
 
         /* Poll for and process events */
         glfwPollEvents();
-    }
 
+    }
     glfwTerminate();
+    delete[] pixels; //=free
+
     return 0;
+
 }
 
 void drawPixel(const int& x, const int& y, const float& red, const float& green, const float& blue)

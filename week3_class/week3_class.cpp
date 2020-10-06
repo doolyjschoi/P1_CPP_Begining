@@ -330,7 +330,7 @@ int main(void)
 
 		glDrawPixels(width, height, GL_RGB, GL_FLOAT, pixels);
 
-		/* Swap front and back buffers */
+		/* Swap front and back buffers */	
 		glfwSwapBuffers(window);
 
 		/* Poll for and process events */
