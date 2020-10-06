@@ -88,34 +88,33 @@ public:
 	}
 };
 
-class Circle
-{
-public:
-	int center_x, center_y;
-	int radius;
+//class Circle
+//{
+//public:
+//	float center_x, center_y;
+//	float radius;
+//	int num_segments;
+//
+//	void initialize(const int& _center_x, const int& _center_y, const int& _radius)
+//	{
+//		center_x = _center_x;
+//		center_y = _center_y;
+//		radius = _radius;
+//	}
+//
+//	void draw()
+//	{
+//		// draw circle
+//	}
+//};
 
-	void initialize(const int& _center_x, const int& _center_y, const int& _radius)
-	{
-		center_x = _center_x;
-		center_y = _center_y;
-		radius = _radius;
-	}
-
-	void draw()
-	{
-		// draw circle
-		
-	}
-
-};
-
-void drawEmptySquare()
-{
-	drawLine(200, 400, 250, 400, 0.0f, 0.0f, 1.0f);
-	drawLine(200, 350, 250, 350, 0.0f, 0.0f, 1.0f);
-	drawLine(200, 350, 200, 400, 0.0f, 0.0f, 1.0f);
-	drawLine(250, 350, 250, 400, 0.0f, 0.0f, 1.0f);
-}
+//void drawEmptySquare()
+//{
+//	drawLine(200, 400, 250, 400, 0.0f, 0.0f, 1.0f);
+//	drawLine(200, 350, 250, 350, 0.0f, 0.0f, 1.0f);
+//	drawLine(200, 350, 200, 400, 0.0f, 0.0f, 1.0f);
+//	drawLine(250, 350, 250, 400, 0.0f, 0.0f, 1.0f);
+//}
 
 void clearBackground()
 {
@@ -140,6 +139,8 @@ void drawLines()
 	// draw lines
 	for (int i = 0; i < num_lines; i++)
 		my_lines[i].draw();
+
+	delete[] my_lines;
 }
 
 void drawEmptySquare()
@@ -156,6 +157,8 @@ void drawEmptySquare()
 	// draw emptysquares
 	for (int i = 0; i < num_squares; i++)
 		my_squares[i].draw();
+
+	delete[] my_squares;
 }
 
 void drawfilledSquare()
@@ -163,15 +166,36 @@ void drawfilledSquare()
 	const int num_squares = 10;
 	Square* my_squares = new Square[num_squares];
 
+	// initialize
 	for (int i = 0; i < num_squares; i++)
 	{
-		my_squares[i].initialize(50 * i + 30, 250, 50 * i + 50, 300);
+		my_squares[i].initialize(50 * i + 30, 250, 50 * i + 60, 300);
 	}
 
 	// draw filledsquares
 	for (int i = 0; i < num_squares; i++)
 		my_squares[i].drawFill();
+
+	delete my_squares;
 }
+
+//void drawCircle()
+//{
+//	const int num_circles = 10;
+//	Circle* my_circles = new Circle[num_circles];
+//
+//	// initialize
+//	for (int i = 0; i < num_circles; i++)
+//	{
+//		my_circles[i].initialize(50 * i + 50, 350, 15);
+//	}
+//
+//	//draw circles
+//	for (int i = 0; i < num_circles; i++)
+//		my_circles[i].draw();
+//}
+
+
 
 void draw()
 {
@@ -186,6 +210,8 @@ void draw()
 
 	/* filledSquare */
 	drawfilledSquare();
+
+	
 
 	// don't forget deleting memory when it's not necessary any more.
 	// delete[] my_lines;
@@ -220,24 +246,26 @@ void draw()
 
 
 	/*¿ø*/
-	/*int u = 25;
-	for (int i = 0; i<u * 2; i++)
-	{
-		for (int j = 0; j<u * 2; j++)
-		{
-			if (u*u > (i + 0.5 - u)*(i + 0.5 - u) + (j + 0.5 - u)*(j + 0.5 - u))
-				drawOnePixel(i + 300, j + 10, 0.0f, 0.0f, 1.0f);
-		}
-	}
-	u = 24;
-	for (int i = 0; i<u * 2; i++)
-	{
-		for (int j = 0; j<u * 2; j++)
-		{
-			if (u*u > (i + 0.5 - u)*(i + 0.5 - u) + (j + 0.5 - u)*(j + 0.5 - u))
-				drawOnePixel(i + 301, j + 11, 1.0f, 1.0f, 1.0f);
-		}
-	}*/
+
+
+	int u = 25;
+	//for (int i = 0; i<u * 2; i++)
+	//{
+	//	for (int j = 0; j<u * 2; j++)
+	//	{
+	//		if (u*u > (i + 0.5 - u)*(i + 0.5 - u) + (j + 0.5 - u)*(j + 0.5 - u))
+	//			drawOnePixel(i + 300, j + 10, 0.0f, 0.0f, 1.0f);
+	//	}
+	//}
+	//u = 24;
+	//for (int i = 0; i<u * 2; i++)
+	//{
+	//	for (int j = 0; j<u * 2; j++)
+	//	{
+	//		if (u*u > (i + 0.5 - u)*(i + 0.5 - u) + (j + 0.5 - u)*(j + 0.5 - u))
+	//			drawOnePixel(i + 301, j + 11, 1.0f, 1.0f, 1.0f);
+	//	}
+	//}
 
 	//drawLine(321, 80, 325, 80, 0.0f, 0.0f, 1.0f); drawLine(326, 80, 330, 80, 0.0f, 0.0f, 1.0f);
 	//drawLine(317, 79, 320, 79, 0.0f, 0.0f, 1.0f); drawLine(331, 79, 334, 79, 0.0f, 0.0f, 1.0f);
