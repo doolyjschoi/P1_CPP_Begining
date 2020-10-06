@@ -2,33 +2,35 @@
 #include <stdio.h>
 #include <iostream>
 
-const int width = 640;
-const int height = 480;
+const int width = 1024;
+const int height = 768;
 
 
 // color = (red, green, blue)
 float* pixels = new float[width * height * 3]; //=malloc
 
-void drawOnePixel(const int& x, const int& y, const float& red, const float& green, const float& blue)
+
+
+void drawPixel(const int& x, const int& y, const float& red, const float& green, const float& blue)
 {
 	pixels[(x + width * y) * 3 + 0] = red;
 	pixels[(x + width * y) * 3 + 1] = green;
 	pixels[(x + width * y) * 3 + 2] = blue;
 }
 
-void drawLine(const int& x_s, const int& y_s, const int& x_e, const int& y_e, const float& red, const float& green, const float& blue)
+void drawLine(const int& start_x, const int& start_y, const int& end_x, const int& end_y, const float& red, const float& green, const float& blue)
 {
-	if (x_e == x_s)
+	if (end_x == start_x)
 	{
-		for (int y = y_s; y <= y_e; y++)
-			drawOnePixel(x_s, y, red, green, blue);
+		for (int y = start_y; y <= end_y; y++)
+			drawPixel(start_x, y, red, green, blue);
 	}
 	else
 	{
-		for (int i = x_s; i <= x_e; i++)
+		for (int i = start_x; i <= end_x; i++)
 		{
-			const int j = (y_e - y_s) * (i - x_s) / (x_e - x_s) + y_s;
-			drawOnePixel(i, j, red, green, blue);
+			const int j = (end_y - start_y) * (i - start_x) / (end_x - start_x) + start_y;
+			drawPixel(i, j, red, green, blue);
 		}
 	}
 }
@@ -83,7 +85,7 @@ public:
 		for (int j = start_y; j < end_y; j++)
 		{
 			for (int i = start_x; i < end_x; i++)
-				drawOnePixel(i, j, 0.0f, 0.0f, 1.0f);
+				drawPixel(i, j, 0.0f, 0.0f, 1.0f);
 		}
 	}
 };
@@ -121,7 +123,7 @@ void clearBackground()
 	for (int j = 0; j < height; j++)
 	{
 		for (int i = 0; i < width; i++)
-			drawOnePixel(i, j, 1.0f, 1.0f, 1.0f);
+			drawPixel(i, j, 1.0f, 1.0f, 1.0f);
 	}
 }
 
@@ -163,20 +165,20 @@ void drawEmptySquare()
 
 void drawfilledSquare()
 {
-	const int num_squares = 10;
-	Square* my_squares = new Square[num_squares];
+	const int num_filledsquares = 10;
+	Square* my_filledsquares = new Square[num_filledsquares];
 
 	// initialize
-	for (int i = 0; i < num_squares; i++)
+	for (int i = 0; i < num_filledsquares; i++)
 	{
-		my_squares[i].initialize(50 * i + 30, 250, 50 * i + 60, 300);
+		my_filledsquares[i].initialize(50 * i + 30, 250, 50 * i + 60, 300);
 	}
 
 	// draw filledsquares
-	for (int i = 0; i < num_squares; i++)
-		my_squares[i].drawFill();
+	for (int i = 0; i < num_filledsquares; i++)
+		my_filledsquares[i].drawFill();
 
-	delete my_squares;
+	delete my_filledsquares;
 }
 
 //void drawCircle()
@@ -199,23 +201,6 @@ void drawfilledSquare()
 
 void draw()
 {
-	/* background clearing */
-	clearBackground();
-
-	/* lines */
-	drawLines();
-
-	/* emptySquare */
-	drawEmptySquare();
-
-	/* filledSquare */
-	drawfilledSquare();
-
-	
-
-	// don't forget deleting memory when it's not necessary any more.
-	// delete[] my_lines;
-	
 	/*»ç¼±*/
 	//for (int i = 50; i >= 46; i--)
 	//{
@@ -246,15 +231,13 @@ void draw()
 
 
 	/*¿ø*/
-
-
-	int u = 25;
+	//int u = 25;
 	//for (int i = 0; i<u * 2; i++)
 	//{
 	//	for (int j = 0; j<u * 2; j++)
 	//	{
 	//		if (u*u > (i + 0.5 - u)*(i + 0.5 - u) + (j + 0.5 - u)*(j + 0.5 - u))
-	//			drawOnePixel(i + 300, j + 10, 0.0f, 0.0f, 1.0f);
+	//			drawPixel(i + 300, j + 10, 0.0f, 0.0f, 1.0f);
 	//	}
 	//}
 	//u = 24;
@@ -263,7 +246,7 @@ void draw()
 	//	for (int j = 0; j<u * 2; j++)
 	//	{
 	//		if (u*u > (i + 0.5 - u)*(i + 0.5 - u) + (j + 0.5 - u)*(j + 0.5 - u))
-	//			drawOnePixel(i + 301, j + 11, 1.0f, 1.0f, 1.0f);
+	//			drawPixel(i + 301, j + 11, 1.0f, 1.0f, 1.0f);
 	//	}
 	//}
 
@@ -314,7 +297,7 @@ int main(void)
 		return -1;
 
 	/* Create a windowed mode window and its OpenGL context */
-	window = glfwCreateWindow(width, height, "Hello World", NULL, NULL);
+	window = glfwCreateWindow(width, height, "Welcome to Dool's World", NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();
@@ -330,8 +313,20 @@ int main(void)
 		/* Render here */
 		glClear(GL_COLOR_BUFFER_BIT);
 
+		// background clearing 
+		clearBackground();
+
+		// lines 
+		drawLines();
+
+		// emptySquare 
+		drawEmptySquare();
+
+		// filledSquare
+		//drawfilledSquare();
+
 		//assign all pixels red color
-		draw();
+		//draw();
 
 		glDrawPixels(width, height, GL_RGB, GL_FLOAT, pixels);
 
@@ -343,7 +338,6 @@ int main(void)
 	}
 
 	glfwTerminate();
-
 	delete[] pixels; //=free
 
 	return 0;
