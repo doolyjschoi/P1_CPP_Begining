@@ -15,12 +15,161 @@ float* pixels = new float[width * height * 3];
 void drawPixel(const int& i, const int& j, const float& red, const float& green, const float& blue);
 void drawThicknerLine(const int& thickness, const int& i0, const int& j0, const int& i1, const int& j1, const float& red, const float& green, const float& blue);
 void drawLine(const int& i0, const int& j0, const int& i1, const int& j1, const float& red, const float& green, const float& blue);
-void drawSquare(int thickness, const int& i0, const int& j0, const int& i1, const int& j1, const float& red, const float& green, const float& blue);
+void drawFilledSquare(int size, const int& i0, const int& j0, const int& i1, const int& j1, const float& red, const float& green, const float& blue);
 void drawPolygon();
 void drawCircle(const double& rad, const int& i0, const int& j0, const float& red, const float& green, const float& blue);
 void drawTriangle();
 void drawEmptySquare(int size, const int& i0, const int& j0, const int& i1, const int& j1, const float& red, const float& green, const float& blue);
 void drawOnPixelBuffer();
+
+class Line
+{
+public:
+	int start_x, start_y;
+	int end_x, end_y;
+
+	void initialize(const int& _start_x, const int& _start_y, const int& _end_x, const int& _end_y)
+	{
+		start_x = _start_x;
+		start_y = _start_y;
+		end_x = _end_x;
+		end_y = _end_y;
+
+	}
+	void draw()
+	{
+		for (int i = start_x; i <= end_x; i++)
+		{
+			const int j = (end_y - start_y) * (i - start_x) / (end_x - start_x) + start_y;
+
+			drawPixel(i, j, 0.0f, 0.3f, 0.8f);
+		}
+	}
+};
+
+class Circle
+{
+public:
+	int center_x, center_y;
+	double radius;
+
+	void setup(const int& _center_x, const int& _center_y, const double& _radius)
+	{
+		center_x = _center_x;
+		center_y = _center_y;
+		radius = _radius;
+	}
+
+	void draw()
+	{
+		for (double i = 0.0; i < 360.0; i += 0.1)
+		{
+			double angle = i * M_PI / 180;
+
+			int x = (int)(center_x + radius * cos(angle));
+			int y = (int)(center_y + radius * sin(angle));
+
+			drawPixel(x, y, 0.3f, 0.9f, 0.8f);
+		}
+	}
+
+};
+
+class Box
+{
+public:
+	int start_x, start_y;
+	int end_x, end_y;
+	int size;
+
+	void initialize(const int& _start_x, const int& _start_y, const int& _end_x, const int& _end_y, const int& _size)
+	{
+		start_x = _start_x;
+		start_y = _start_y;
+		end_x = _end_x;
+		end_y = _end_y;
+		size = _size;
+	}
+
+	void drawFilledSquare() 
+	{
+		int i_center = (start_x + end_x) / 2;
+		int j_center = (start_y + end_y) / 2;
+
+		for (int j = j_center - size; j < j_center + size; j++) {
+			for (int i = i_center - size; i < i_center + size; i++) {
+				drawPixel(i, j, 0.7f, 0.5f, 0.8f);
+			}
+		}
+	}
+	void drawEmptySquare() 
+	{
+		int i_center = (start_x + end_x) / 2;
+		int j_center = (start_y + end_y) / 2;
+
+		for (int j = j_center - size; j <= j_center + size; j++) {
+			for (int i = i_center - size; i <= i_center + size; i = i + size * 2)
+				drawPixel(i, j, 0.3f, 0.6f, 0.7f);
+
+		}
+		for (int i = i_center - size; i <= i_center + size; i++) {
+			for (int j = j_center - size; j <= j_center + size; j = j + size * 2)
+				drawPixel(i, j, 0.3f, 0.6f, 0.7f);
+		}
+	}
+
+};
+
+void drawBoxes()
+{
+	const int num_boxes = 10;
+	Box* my_boxes = new Box[num_boxes];
+
+	for (int i = 0; i < num_boxes; i++)
+	{
+		my_boxes[i].initialize(80 * i + 0, 350, 80 * i + 50, 400, 30);
+	}
+	for (int i = 0; i < num_boxes; i++)
+	{
+		if (i % 2 == 0)
+		{
+			my_boxes[i].drawFilledSquare();
+		}
+		else
+		{
+			my_boxes[i].drawEmptySquare();
+		}
+	}
+}
+
+void drawCircles()
+{
+	const int num_circles = 10;
+
+	Circle* my_circles = new Circle[num_circles];
+
+	for (int i = 0; i < num_circles; i++)
+	{
+		my_circles[i].setup(i * 50 + 0, 300, 40.0);
+	}
+	for (int i = 0; i < num_circles; i++)
+		my_circles[i].draw();
+}
+
+void drawLines()
+{
+	const int num_lines = 10;
+
+	Line* my_lines = new Line[num_lines];
+
+	for (int i = 0; i < num_lines; i++)
+	{
+		my_lines[i].initialize(50 * i + 0, 0, 50 * i + 50, 15);
+	}
+
+	for (int i = 0; i < num_lines; i++)
+		my_lines[i].draw();
+}
 
 int main(void)
 {
@@ -49,7 +198,6 @@ int main(void)
 		//glClear(GL_COLOR_BUFFER_BIT);
 
 		drawOnPixelBuffer();
-
 		//TODO: RGB struct
 		//Make a pixel drawing function
 		//Make a line drawing function
@@ -78,6 +226,15 @@ void drawPixel(const int& i, const int& j, const float& red, const float& green,
 	pixels[(i + width * j) * 3 + 1] = green;
 	pixels[(i + width * j) * 3 + 2] = blue;
 }
+void drawLine(const int& i0, const int& j0, const int& i1, const int& j1, const float& red, const float& green, const float& blue)
+{
+	for (int i = i0; i <= i1; i++)
+	{
+		const int j = (j1 - j0) * (i - i0) / (i1 - i0) + j0;
+
+		drawPixel(i, j, red, green, blue);
+	}
+}
 void drawThicknerLine(const int& thickness, const int& i0, const int& j0, const int& i1, const int& j1, const float& red, const float& green, const float& blue) {
 	for (int i = i0; i <= i1; i++)
 	{
@@ -88,44 +245,48 @@ void drawThicknerLine(const int& thickness, const int& i0, const int& j0, const 
 		}
 	}
 }
-// scratched from https://courses.engr.illinois.edu/ece390/archive/archive-f2000/mp/mp4/anti.html
-// see 'Rasterization' part.
-void drawLine(const int& i0, const int& j0, const int& i1, const int& j1, const float& red, const float& green, const float& blue)
-{
-	for (int i = i0; i <= i1; i++)
-	{
-		const int j = (j1 - j0) * (i - i0) / (i1 - i0) + j0;
 
-		drawPixel(i, j, red, green, blue);
-	}
-}
-void drawSquare(int thickness, const int& i0, const int& j0, const int& i1, const int& j1, const float& red, const float& green, const float& blue) {
+void drawFilledSquare(int size, const int& i0, const int& j0, const int& i1, const int& j1, const float& red, const float& green, const float& blue) {
 	int i_center = (i0 + i1) / 2;
 	int j_center = (j0 + j1) / 2;
 
-	for (int j = j_center - thickness; j < j_center + thickness; j++) {
-		for (int i = i_center - thickness; i < i_center + thickness; i++) {
+	for (int j = j_center - size; j < j_center + size; j++) {
+		for (int i = i_center - size; i < i_center + size; i++) {
 			drawPixel(i, j, red, green, blue);
 		}
 	}
 }
-void drawPolygon() {
-	/*
-	//
-	int i_center = 120;
-	int j_center = 130;
-	int size = 10;
-	int j_start = j_center - size;
-	int j_end = j_center + size;
-	for (int j = j_start; j <= j_end + size; j++) {
-		int i_start = i_center - size + (j / 5);
-		int i_end = i_center + size - (j / 5);
-		for (int i = i_start; i <= i_end; i++) {
-			//if(j == j_start || j == j_end || i == i_start || i == i_end)
-			drawPixel(i, j, 1.0f, 0.0f, 0.0f);
-		}
+void drawEmptySquare(int size, const int& i0, const int& j0, const int& i1, const int& j1, const float& red, const float& green, const float& blue) {
+	int i_center = (i0 + i1) / 2;
+	int j_center = (j0 + j1) / 2;
+
+	for (int j = j_center - size; j <= j_center + size; j++) {
+		for (int i = i_center - size; i <= i_center + size; i = i + size * 2)
+			drawPixel(i, j, red, green, blue);
+
 	}
-	*/
+	for (int i = i_center - size; i <= i_center + size; i++) {
+		for (int j = j_center - size; j <= j_center + size; j = j + size * 2)
+			drawPixel(i, j, red, green, blue);
+	}
+}
+void drawPolygon() {
+	
+	//
+	//int i_center = 420;
+	//int j_center = 230;
+	//int size = 10;
+	//int j_start = j_center - size;
+	//int j_end = j_center + size;
+	//for (int j = j_start; j <= j_end + size; j++) {
+	//	int i_start = i_center - size + (j / 5);
+	//	int i_end = i_center + size - (j / 5);
+	//	for (int i = i_start; i <= i_end; i++) {
+	//		if(j == j_start || j == j_end || i == i_start || i == i_end)
+	//		drawPixel(i, j, 0.0f, 0.0f, 1.0f);
+	//	}
+	//}
+	
 	drawLine(500, 200, 550, 200, 0.0f, 0.0f, 0.0f);
 	drawLine(480, 250, 525, 290, 0.0f, 0.0f, 0.0f);
 	drawLine(525, 290, 570, 250, 0.0f, 0.0f, 0.0f);
@@ -169,23 +330,6 @@ void drawTriangle() {
 		}
 	}
 }
-
-void drawEmptySquare(int size, const int& i0, const int& j0, const int& i1, const int& j1, const float& red, const float& green, const float& blue) {
-	int i_center = (i0 + i1) / 2;
-	int j_center = (j0 + j1) / 2;
-
-	for (int j = j_center - size; j <= j_center + size; j++) {
-		//for (int i = i_center - thickness; i < i_center + thickness; i++) {
-		for (int i = i_center - size; i <= i_center + size; i = i + size * 2)
-			drawPixel(i, j, red, green, blue);
-
-	}
-	//for (int j = j_center - thickness; j < j_center + thickness; j++) {
-	for (int i = i_center - size; i <= i_center + size; i++) {
-		for (int j = j_center - size; j <= j_center + size; j = j + size * 2)
-			drawPixel(i, j, red, green, blue);
-	}
-}
 void drawOnPixelBuffer()
 {
 	//std::memset(pixels, 1.0f, sizeof(float)*width*height * 3); // doesn't work
@@ -206,13 +350,18 @@ void drawOnPixelBuffer()
 	const int i0 = 100, i1 = 200;
 	const int j0 = 300, j1 = 400;
 	const int thickness = 10;
-	const int size = 30;
-	//drawLine(i0, j0, i1, j1, 1.0f, 0.0f, 0.0f);
-	drawThicknerLine(thickness, i0, j0, i1, j1, 0.0f, 1.0f, 0.0f);
-	drawSquare(size, i0 + 300, j0, i1 + 300, j1, 0.0f, 1.0f, 1.0f);
-	//drawCircle(50, i0 + 100, i1 + 100, 0.0f, 1.0f, 0.0f);
+	const int size = 50;
+	//drawLine(i0 + 100, j0 - 100, i1 + 100, j1 - 100, 1.0f, 0.0f, 0.0f);
+	drawLines();
+	drawCircles();
+	drawBoxes();
+
+
+	//drawThicknerLine(thickness, i0, j0, i1, j1, 0.0f, 1.0f, 0.0f);
+	//drawFilledSquare(size, i0 + 300, j0, i1 + 300, j1, 0.0f, 0.5f, 0.3f);
 	//drawEmptySquare(size, i0 + 100, j0, i1 + 100, j1, 1.0f, 0.0f, 0.0f);
-	//drawTriangle();
+	//drawCircle(50, i0 + 100, i1 + 100, 0.0f, 1.0f, 0.0f);
+	drawTriangle();
 	//drawPolygon();
 	//TODO: try moving object
 }
