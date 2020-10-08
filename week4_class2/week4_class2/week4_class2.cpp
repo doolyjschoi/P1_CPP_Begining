@@ -5,6 +5,8 @@
 #include <chrono>         // std::chrono::seconds
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include <iostream>
+
 
 //glfw
 const int width = 640;
@@ -22,11 +24,30 @@ void drawTriangle();
 void drawEmptySquare(int size, const int& i0, const int& j0, const int& i1, const int& j1, const float& red, const float& green, const float& blue);
 void drawOnPixelBuffer();
 
-class Line
+class GeometricObject
+{
+public:
+
+	virtual void draw()
+	{
+		std::cout << "Geometric Draw" << std::endl;
+	}
+};
+
+
+class Line : public GeometricObject
 {
 public:
 	int start_x, start_y;
 	int end_x, end_y;
+
+	Line()
+	{}
+
+	Line(const int& _start_x, const int& _start_y, const int& _end_x, const int& _end_y)
+	{
+		initialize(_start_x, _start_y, _end_x, _end_y);
+	}
 
 	void initialize(const int& _start_x, const int& _start_y, const int& _end_x, const int& _end_y)
 	{
@@ -45,6 +66,66 @@ public:
 			drawPixel(i, j, 0.0f, 0.3f, 0.8f);
 		}
 	}
+};
+
+class Box : public GeometricObject
+{
+public:
+	int start_x, start_y;
+	int end_x, end_y;
+	int size;
+
+	Box() // default constructor
+	{}
+
+	Box(const int& _start_x, const int& _start_y, const int& _end_x, const int& _end_y, const int& _size) // constructor 
+	{
+		initialize(_start_x, _start_y, _end_x, _end_y, _size);
+	}
+
+	void initialize(const int& _start_x, const int& _start_y, const int& _end_x, const int& _end_y, const int& _size)
+	{
+		start_x = _start_x;
+		start_y = _start_y;
+		end_x = _end_x;
+		end_y = _end_y;
+		size = _size;
+	}
+
+	//void draw()
+	//{
+	//	std::cout << "Box::Draw" << std::endl;
+	//}
+
+
+	void drawFilledSquare() 
+	{
+		int i_center = (start_x + end_x) / 2;
+		int j_center = (start_y + end_y) / 2;
+
+		for (int j = j_center - size; j < j_center + size; j++) {
+			for (int i = i_center - size; i < i_center + size; i++) {
+				drawPixel(i, j, 0.7f, 0.5f, 0.8f);
+			}
+		}
+	}
+
+	void draw() 
+	{
+		int i_center = (start_x + end_x) / 2;
+		int j_center = (start_y + end_y) / 2;
+
+		for (int j = j_center - size; j <= j_center + size; j++) {
+			for (int i = i_center - size; i <= i_center + size; i = i + size * 2)
+				drawPixel(i, j, 0.3f, 0.6f, 0.7f);
+
+		}
+		for (int i = i_center - size; i <= i_center + size; i++) {
+			for (int j = j_center - size; j <= j_center + size; j = j + size * 2)
+				drawPixel(i, j, 0.3f, 0.6f, 0.7f);
+		}
+	}
+
 };
 
 class Circle
@@ -75,72 +156,27 @@ public:
 
 };
 
-class Box
-{
-public:
-	int start_x, start_y;
-	int end_x, end_y;
-	int size;
-
-	void initialize(const int& _start_x, const int& _start_y, const int& _end_x, const int& _end_y, const int& _size)
-	{
-		start_x = _start_x;
-		start_y = _start_y;
-		end_x = _end_x;
-		end_y = _end_y;
-		size = _size;
-	}
-
-	void drawFilledSquare() 
-	{
-		int i_center = (start_x + end_x) / 2;
-		int j_center = (start_y + end_y) / 2;
-
-		for (int j = j_center - size; j < j_center + size; j++) {
-			for (int i = i_center - size; i < i_center + size; i++) {
-				drawPixel(i, j, 0.7f, 0.5f, 0.8f);
-			}
-		}
-	}
-	void drawEmptySquare() 
-	{
-		int i_center = (start_x + end_x) / 2;
-		int j_center = (start_y + end_y) / 2;
-
-		for (int j = j_center - size; j <= j_center + size; j++) {
-			for (int i = i_center - size; i <= i_center + size; i = i + size * 2)
-				drawPixel(i, j, 0.3f, 0.6f, 0.7f);
-
-		}
-		for (int i = i_center - size; i <= i_center + size; i++) {
-			for (int j = j_center - size; j <= j_center + size; j = j + size * 2)
-				drawPixel(i, j, 0.3f, 0.6f, 0.7f);
-		}
-	}
-
-};
-
-void drawBoxes()
-{
-	const int num_boxes = 10;
-	Box* my_boxes = new Box[num_boxes];
-
-	for (int i = 0; i < num_boxes; i++)
-	{
-		my_boxes[i].initialize(80 * i + 0, 350, 80 * i + 50, 400, 30);
-	}
-	for (int i = 0; i < num_boxes; i++)
-	{
-		if (i % 2 == 0)
-		{
-			my_boxes[i].drawFilledSquare();
-		}
-		else
-		{
-			my_boxes[i].drawEmptySquare();
-		}
-	}
-}
+//void drawBoxes()
+//{
+//	const int num_boxes = 10;
+//	Box* my_boxes = new Box[num_boxes];
+//
+//	for (int i = 0; i < num_boxes; i++)
+//	{
+//		my_boxes[i].initialize(80 * i + 0, 350, 80 * i + 50, 400, 30);
+//	}
+//	for (int i = 0; i < num_boxes; i++)
+//	{
+//		if (i % 2 == 0)
+//		{
+//			my_boxes[i].drawFilledSquare();
+//		}
+//		else
+//		{
+//			my_boxes[i].drawEmptySquare();
+//		}
+//	}
+//}
 
 void drawCircles()
 {
@@ -156,20 +192,20 @@ void drawCircles()
 		my_circles[i].draw();
 }
 
-void drawLines()
-{
-	const int num_lines = 10;
-
-	Line* my_lines = new Line[num_lines];
-
-	for (int i = 0; i < num_lines; i++)
-	{
-		my_lines[i].initialize(50 * i + 0, 0, 50 * i + 50, 15);
-	}
-
-	for (int i = 0; i < num_lines; i++)
-		my_lines[i].draw();
-}
+//void drawLines()
+//{
+//	const int num_lines = 10;
+//
+//	Line* my_lines = new Line[num_lines];
+//
+//	for (int i = 0; i < num_lines; i++)
+//	{
+//		my_lines[i].initialize(50 * i + 0, 0, 50 * i + 50, 15);
+//	}
+//
+//	for (int i = 0; i < num_lines; i++)
+//		my_lines[i].draw();
+//}
 
 int main(void)
 {
@@ -198,6 +234,54 @@ int main(void)
 		//glClear(GL_COLOR_BUFFER_BIT);
 
 		drawOnPixelBuffer();
+
+		//GeometricObject *my_geo = new GeometricObject;
+		//my_geo->draw();
+		const int num_lines = 5;
+		const int num_boxes = 7;
+		const int num_objects = 12;
+
+		// ① make pointer array
+		//Line **my_lines = new Line*[num_lines];
+		//Box **my_box = new Box*[num_boxes];
+		GeometricObject **my_objects = new GeometricObject*[num_lines + num_boxes];
+
+
+
+		// ② initialize pointer array
+		for (int i = 0; i < num_lines; i++)
+		{
+			Line* temp = new Line;
+			temp->start_x = 0 + 50 * i;
+			temp->start_y = 100;
+			temp->end_x = 50 + 50 * i;
+			temp->end_y = 150;
+			my_objects[i] = temp;
+		}
+		// use constructor
+		//for (int i = 0; i < num_lines; i++)
+		//{
+		//	my_objects[i] = new Line(0 + 50 * i, 100, 50 + 50 * i, 150);
+		//}
+
+		for (int i = num_lines ; i < num_objects; i++)
+		{
+			my_objects[i] = new Box(0 + 50 * i, 0, 50 + 50 * i, 50, 15);
+		}
+
+
+
+		// ③ excute function
+		//for (int i = 0; i < num_lines; i++)
+		//	my_lines[i]->draw();
+		//for (int i = 0; i < num_boxes; i++)
+		//	my_box[i]->draw();
+
+
+		for (int i = 0; i < num_lines + num_boxes; i++)
+			my_objects[i]->draw();
+
+		
 		//TODO: RGB struct
 		//Make a pixel drawing function
 		//Make a line drawing function
@@ -347,14 +431,14 @@ void drawOnPixelBuffer()
 
 	// drawing a line
 	//TODO: anti-aliasing
-	const int i0 = 100, i1 = 200;
-	const int j0 = 300, j1 = 400;
-	const int thickness = 10;
-	const int size = 50;
+	//const int i0 = 100, i1 = 200;
+	//const int j0 = 300, j1 = 400;
+	//const int thickness = 10;
+	//const int size = 50;
 	//drawLine(i0 + 100, j0 - 100, i1 + 100, j1 - 100, 1.0f, 0.0f, 0.0f);
-	drawLines();
+	//drawLines();
 	drawCircles();
-	drawBoxes();
+	//drawBoxes();
 
 
 	//drawThicknerLine(thickness, i0, j0, i1, j1, 0.0f, 1.0f, 0.0f);
