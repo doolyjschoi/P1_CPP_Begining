@@ -6,7 +6,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <iostream>
-
+#include <vector>
 
 //glfw
 const int width = 640;
@@ -242,27 +242,31 @@ int main(void)
 		const int num_objects = 12;
 
 		// ① make pointer array
+		//std::vector<GeometricObject*>* go_vector;
+
 		//Line **my_lines = new Line*[num_lines];
 		//Box **my_box = new Box*[num_boxes];
+
 		GeometricObject **my_objects = new GeometricObject*[num_lines + num_boxes];
 
 
 
 		// ② initialize pointer array
-		for (int i = 0; i < num_lines; i++)
-		{
-			Line* temp = new Line;
-			temp->start_x = 0 + 50 * i;
-			temp->start_y = 100;
-			temp->end_x = 50 + 50 * i;
-			temp->end_y = 150;
-			my_objects[i] = temp;
-		}
-		// use constructor
 		//for (int i = 0; i < num_lines; i++)
 		//{
-		//	my_objects[i] = new Line(0 + 50 * i, 100, 50 + 50 * i, 150);
+		//	Line* temp = new Line;
+		//	temp->start_x = 0 + 50 * i;
+		//	temp->start_y = 100;
+		//	temp->end_x = 50 + 50 * i;
+		//	temp->end_y = 150;
+		//	my_objects[i] = temp;
 		//}
+
+		//use constructor
+		for (int i = 0; i < num_lines; i++)
+		{
+			my_objects[i] = new Line(0 + 50 * i, 100, 50 + 50 * i, 150);
+		}
 
 		for (int i = num_lines ; i < num_objects; i++)
 		{
