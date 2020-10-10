@@ -18,5 +18,25 @@
     <ClCompile Include="Dpolymorphism.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Box.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Circle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeometricObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GeometricObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Circle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Box.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
