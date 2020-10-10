@@ -1,5 +1,5 @@
 #include "Box.h"
-void Box::draw() // seperate declaration - definition (header, body)
+void Box::draw() // definition (body)
 {
 	std::cout << "Box::Draw" << std::endl;
 }

@@ -5,5 +5,5 @@
 class Box : public GeometricObject
 {
 public:
-	void draw(); // seperate declaration - definition (header, body)
+	void draw(); // declaration
 };
