@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClCompile Include="Fpolymorphism.cpp" />
     <ClCompile Include="Box.cpp" />
+    <ClCompile Include="GeometricObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Box.h" />

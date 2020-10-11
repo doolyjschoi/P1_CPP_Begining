@@ -1,5 +1,5 @@
 #pragma once
-
+#include <string>
 class GeometricObject
 {
 public:
@@ -8,4 +8,6 @@ public:
 	{
 		// default draw function for all children
 	}
+	static GeometricObject* getGeometricObject(const std::string& name);
+
 };
